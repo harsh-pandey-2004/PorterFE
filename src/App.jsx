@@ -19,7 +19,8 @@ import ParcelHistory from './components/userdashboardsection/ParcelHistory.jsx';
 import TrackParcel from './components/userdashboardsection/TrackParcel.jsx';
 import CreateParcel from './components/userdashboardsection/CreateParcel.jsx';
 import UpdateParcel from './components/userdashboardsection/UpdateParcel.jsx';
-import DeleteParcel from './components/userdashboardsection/DeleteParcel.jsx';
+// import DeleteParcel from './components/userdashboardsection/DeleteParcel.jsx';
+import CancelParcel from './components/userdashboardsection/CancelParcel.jsx';
 import Settings from './components/userdashboardsection/Settings.jsx';
 import Blog from './components/footerSection/Blog.jsx';
 import Testimonial from './components/footerSection/Testimonial.jsx';
@@ -65,22 +66,18 @@ function App() {
               <Route path="create-parcel" element={<CreateParcel />} />
               <Route path='parcel-offer' element={<ParcelOffer/>}/> 
               <Route path="update-parcel" element={<UpdateParcel />} />
-              <Route path="delete-parcel" element={<DeleteParcel />} />
+              {/* <Route path="delete-parcel" element={<DeleteParcel />} /> */}
+              <Route path="cancel-parcel" element={<CancelParcel/>}/>
               <Route path="settings" element={<Settings />} />
             </Route>
 
             {/* Delivery Partner Dashboard Route */}
-        <Route path="/partner-dashboard" element={<DeliveryPartnerDashboard />}>
+        <Route path="/partner-dashboard/*" element={<DeliveryPartnerDashboard />}>
+        <Route index element={<Navigate to="update-details" />} />
           <Route path="dashboard" element={<Dashboard />} /> 
           <Route path="parcel-bids" element={<ParcelBids />} />
           <Route path="accepted-parcels" element={<AcceptedParcels />} />
           <Route path="profile" element={<Profile />} />
-          {/* <Route path="dashboard" element={<DashboardHome />} />
-          <Route path="parcel-bids" element={<ParcelBids />} />
-          <Route path="accepted-parcels" element={<AcceptedParcels />} />
-          <Route path="track-parcel" element={<TrackParcel />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="settings" element={<Settings />} /> */}
           <Route path="update-details" element={<UpdateDetails/>}/>
         </Route>
 

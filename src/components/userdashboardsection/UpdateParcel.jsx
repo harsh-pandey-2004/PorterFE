@@ -87,7 +87,7 @@ const UpdateParcel = ({ parcel, onUpdate }) => {
         </div>
 
         {/* Quantity */}
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <input
             type="number"
             name="quantity"
@@ -98,7 +98,7 @@ const UpdateParcel = ({ parcel, onUpdate }) => {
             placeholder="Quantity"
             required
           />
-        </div>
+        </div> */}
 
         {/* Product Type */}
         <div className="mb-4">
@@ -113,7 +113,7 @@ const UpdateParcel = ({ parcel, onUpdate }) => {
         </div>
 
         {/* Dimensions */}
-        <div className="mb-4 flex justify-between">
+        {/* <div className="mb-4 flex justify-between">
           <div className="w-1/2 pr-2">
             <input
               type="number"
@@ -136,7 +136,7 @@ const UpdateParcel = ({ parcel, onUpdate }) => {
               required
             />
           </div>
-        </div>
+        </div> */}
 
         {/* Urgency */}
         <div className="mb-4">
@@ -165,7 +165,7 @@ const UpdateParcel = ({ parcel, onUpdate }) => {
         </div>
 
         {/* Packing Required */}
-        <div className="mb-4 flex items-center">
+        {/* <div className="mb-4 flex items-center">
           <input
             type="checkbox"
             name="packingRequired"
@@ -174,10 +174,10 @@ const UpdateParcel = ({ parcel, onUpdate }) => {
             className="mr-2 leading-tight"
           />
           <label className="text-gray-700">Do you need packing for this parcel?</label>
-        </div>
+        </div> */}
 
         {/* Packing Type */}
-        {parcelDetails.packingRequired && (
+        {/* {parcelDetails.packingRequired && (
           <div className="mb-4">
             <select
               name="packingType"
@@ -201,7 +201,7 @@ const UpdateParcel = ({ parcel, onUpdate }) => {
               )}
             </div>
           </div>
-        )}
+        )} */}
 
         {/* Submit Button */}
         <button
