@@ -1,60 +1,73 @@
 import React, { useState, useEffect } from 'react';
+import { getParcel } from '../../services/userDashboard';
 
 const ParcelHistory = () => {
   const [parcelList, setParcelList] = useState([]);
 
   // Simulate fetching parcel history data from an API or backend
+  // useEffect(() => {
+  //   const fetchParcelHistory = () => {
+  //     const parcelHistory = [
+  //       {
+  //         trackingNumber: 'PKG123456789',
+  //         from: '123 Sender St, City A, Country',
+  //         to: '456 Receiver Ave, City B, Country',
+  //         quantity: 2,
+  //         productType: 'Electronics',
+  //         urgency: 'express',
+  //         transportType: 'air',
+  //         weight: 1.5,
+  //         width: 30,
+  //         height: 20,
+  //         packingRequired: true,
+  //         packingType: 'standard',
+  //       },
+  //       {
+  //         trackingNumber: 'PKG987654321',
+  //         from: '789 Sender Blvd, City C, Country',
+  //         to: '012 Receiver Rd, City D, Country',
+  //         quantity: 1,
+  //         productType: 'Documents',
+  //         urgency: 'regular',
+  //         transportType: 'road',
+  //         weight: 0.5,
+  //         width: 15,
+  //         height: 10,
+  //         packingRequired: false,
+  //         packingType: '',
+  //       },
+  //       {
+  //         trackingNumber: 'PKG456789123',
+  //         from: '135 Sender Lane, City E, Country',
+  //         to: '246 Receiver Way, City F, Country',
+  //         quantity: 3,
+  //         productType: 'Clothes',
+  //         urgency: 'express',
+  //         transportType: 'sea',
+  //         weight: 5.0,
+  //         width: 40,
+  //         height: 30,
+  //         packingRequired: true,
+  //         packingType: 'custom',
+  //       },
+  //     ];
+
+  //     setParcelList(parcelHistory);
+  //   };
+
+  //   fetchParcelHistory();
+  // }, []);
   useEffect(() => {
-    const fetchParcelHistory = () => {
-      const parcelHistory = [
-        {
-          trackingNumber: 'PKG123456789',
-          from: '123 Sender St, City A, Country',
-          to: '456 Receiver Ave, City B, Country',
-          quantity: 2,
-          productType: 'Electronics',
-          urgency: 'express',
-          transportType: 'air',
-          weight: 1.5,
-          width: 30,
-          height: 20,
-          packingRequired: true,
-          packingType: 'standard',
-        },
-        {
-          trackingNumber: 'PKG987654321',
-          from: '789 Sender Blvd, City C, Country',
-          to: '012 Receiver Rd, City D, Country',
-          quantity: 1,
-          productType: 'Documents',
-          urgency: 'regular',
-          transportType: 'road',
-          weight: 0.5,
-          width: 15,
-          height: 10,
-          packingRequired: false,
-          packingType: '',
-        },
-        {
-          trackingNumber: 'PKG456789123',
-          from: '135 Sender Lane, City E, Country',
-          to: '246 Receiver Way, City F, Country',
-          quantity: 3,
-          productType: 'Clothes',
-          urgency: 'express',
-          transportType: 'sea',
-          weight: 5.0,
-          width: 40,
-          height: 30,
-          packingRequired: true,
-          packingType: 'custom',
-        },
-      ];
-
-      setParcelList(parcelHistory);
+    const fetchUser = async () => {
+      try {
+        const response = await getParcel();
+        console.log(response.data);
+        setParcelList(response.data);
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
     };
-
-    fetchParcelHistory();
+    fetchUser();
   }, []);
 
   return (
@@ -73,13 +86,26 @@ const ParcelHistory = () => {
               <p className="text-gray-700"><strong>Type of Product:</strong> {parcel.productType}</p>
               <p className="text-gray-700"><strong>Urgency:</strong> {parcel.urgency}</p>
               <p className="text-gray-700"><strong>Transport Type:</strong> {parcel.transportType}</p>
-              <p className="text-gray-700"><strong>Weight:</strong> {parcel.weight} kg</p>
-              <p className="text-gray-700"><strong>Dimensions:</strong> {parcel.width} cm (W) x {parcel.height} cm (H)</p>
-              {parcel.packingRequired && (
+              <p className="text-gray-700"><strong>Weight:</strong> {parcel.dimensions.weight} kg</p>
+              <p className="text-gray-700"><strong>Dimensions:</strong> {parcel.dimensions.width} cm (W) x {parcel.dimensions.height} cm (H)</p>
+              
+
+              {parcel.packing.required && (
                 <p className="text-gray-700">
-                  <strong>Packing Type:</strong> {parcel.packingType === 'standard' ? 'Standard Packing' : parcel.packingType === 'custom' ? 'Custom Packing' : 'Bulk Packing'}
+                  <strong>Packing Type:</strong>
+                  {parcel.packing.type === 'standard'
+                    ? 'Standard Packing'
+                    : parcel.packing.type === 'custom'
+                      ? 'Custom Packing'
+                      : 'Bulk Packing'}
                 </p>
               )}
+
+              {/* Show Created At Date */}
+              <p className="text-gray-700">
+                <strong>Created At:</strong> {new Date(parcel.createdAt).toLocaleString()}
+              </p>
+
             </li>
           ))}
         </ul>

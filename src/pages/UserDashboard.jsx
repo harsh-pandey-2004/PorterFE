@@ -7,7 +7,9 @@ const UserDashboard = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    console.log('User logged out');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    
     navigate('/login');
   };
 

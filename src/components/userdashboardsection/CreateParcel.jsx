@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
+import { createParcel } from '../../services/userDashboard';
 
 
 
 const CreateParcel = () => {
   const [parcelDetails, setParcelDetails] = useState({
-    trackingNumber: '',
     from: '',
     to: '',
     quantity: 1,
     productType: '',
     urgency: 'regular',
-    transportType: 'road',
+    transportType: 'bike',
     weight: '',
     width: '',
     height: '',
-    packingRequired: false, // New field for packing required
-    packingType: 'standard', // Set default packing type to 'standard'
+    packingRequired: false,
+    packingType: 'standard',
   });
 
   const handleChange = (e) => {
@@ -26,11 +26,37 @@ const CreateParcel = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Logic to create a parcel
-    console.log('Parcel created:', parcelDetails);
+    const user = JSON.parse(localStorage.getItem('user'));  // Ensure `user` is retrieved correctly
+
+    const parcelData = {
+      userId: user._id,  // Use actual user ID from localStorage
+      from: parcelDetails.from,
+      to: parcelDetails.to,
+      quantity: parcelDetails.quantity,
+      productType: parcelDetails.productType,
+      urgency: parcelDetails.urgency,
+      transportType: parcelDetails.transportType,
+      dimensions: {
+        weight: parcelDetails.weight,
+        width: parcelDetails.width,
+        height: parcelDetails.height,
+      },
+      packing: {
+        required: parcelDetails.packingRequired,
+        type: parcelDetails.packingType,
+      }
+    };
+
+    try {
+      const response = await createParcel(parcelData);
+      console.log('Parcel created:', response.data);
+    } catch (error) {
+      console.error("Error creating parcel:", error);
+    }
   };
+  
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-lg mt-10">

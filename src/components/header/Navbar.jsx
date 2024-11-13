@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import logo from '../../assets/logobookmytransport_processed.png';
 
@@ -7,16 +7,16 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const userLoggedIn = localStorage.getItem('isLoggedIn') === "true";
-    setIsLoggedIn(userLoggedIn);
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem('isLoggedIn');
-    setIsLoggedIn(false);
-  };
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [localStorage.getItem('token')]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -56,10 +56,10 @@ function Navbar() {
       >
         <i className="fa fa-bars"></i>
       </button>
-      
+
 
       {/* Normal Navbar for large screens */}
-      <ul className="hidden lg:flex lg:space-x-8">
+      {/* <ul className="hidden lg:flex lg:space-x-8">
         <li><Link to="/" className="block hover:text-yellow-300 px-4 py-2 rounded-md transition">Home</Link></li>
         <li><Link to="/track" className="block hover:text-yellow-300  px-4 py-2 rounded-md transition">Track Parcels</Link></li>
         <li><Link to="/new-shipment" className="block hover:text-yellow-300  px-4 py-2 rounded-md transition">New Shipment</Link></li>
@@ -75,11 +75,21 @@ function Navbar() {
               <button onClick={handleLogout} className="block hover:bg-[#4FC3F7] px-4 py-2 rounded-md transition">Logout</button>
             </li>
           </>
+          
+        )}
+      </ul> */}
+      <ul className="hidden lg:flex lg:space-x-8">
+        <li><Link to="/" className="block hover:text-yellow-300 px-4 py-2 rounded-md transition">Home</Link></li>
+        <li><Link to="/track" className="block hover:text-yellow-300 px-4 py-2 rounded-md transition">Track Parcels</Link></li>
+        <li><Link to="/new-shipment" className="block hover:text-yellow-300 px-4 py-2 rounded-md transition">New Shipment</Link></li>
+        <li><Link to="/reports" className="block hover:text-yellow-300 px-4 py-2 rounded-md transition">Delivery Partners</Link></li>
+        {!isLoggedIn && (
+          <li><Link to="/login" className="block hover:text-yellow-300 px-4 py-2 rounded-md transition">Login</Link></li>
         )}
       </ul>
 
       {/* Dropdown Menu for small and medium screens */}
-      {isOpen && (
+      {/* {isOpen && (
         <ul
           ref={dropdownRef}
           className="absolute bg-[#1D3557] right-2 top-14 md:hidden space-y-4 z-50 p-4 w-40 rounded-md"
@@ -115,6 +125,28 @@ function Navbar() {
             </>
           )}
         </ul>
+      )} */}
+      {isOpen && (
+        <ul
+          ref={dropdownRef}
+          className="absolute bg-[#1D3557] right-2 top-14 md:hidden space-y-4 z-50 p-4 w-40 rounded-md"
+        >
+          <li><Link to="/" className="block hover:bg-[#4FC3F7] px-4 py-2 rounded-md transition" onClick={handleLinkClick}>Home</Link></li>
+          <li><Link to="/track" className="block hover:bg-[#4FC3F7] px-4 py-2 rounded-md transition" onClick={handleLinkClick}>Track Parcels</Link></li>
+          <li><Link to="/new-shipment" className="block hover:bg-[#4FC3F7] px-4 py-2 rounded-md transition" onClick={handleLinkClick}>New Shipment</Link></li>
+          <li><Link to="/reports" className="block hover:bg-[#4FC3F7] px-4 py-2 rounded-md transition" onClick={handleLinkClick}>Delivery Partners</Link></li>
+          {!isLoggedIn && (
+            <li>
+              <Link
+                to="/login"
+                className="block hover:bg-[#4FC3F7] px-4 py-2 rounded-md transition"
+                onClick={handleLinkClick}
+              >
+                Login
+              </Link>
+            </li>
+          )}
+        </ul>
       )}
 
       {/* Right Side: Search and Icons */}
@@ -138,6 +170,7 @@ function Navbar() {
 }
 
 export default Navbar;
+
 
 
 
