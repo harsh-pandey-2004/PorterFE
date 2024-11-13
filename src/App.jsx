@@ -19,7 +19,7 @@ import ParcelHistory from './components/userdashboardsection/ParcelHistory.jsx';
 import TrackParcel from './components/userdashboardsection/TrackParcel.jsx';
 import CreateParcel from './components/userdashboardsection/CreateParcel.jsx';
 import UpdateParcel from './components/userdashboardsection/UpdateParcel.jsx';
-import DeleteParcel from './components/userdashboardsection/DeleteParcel.jsx';
+// import DeleteParcel from './components/userdashboardsection/DeleteParcel.jsx';
 import CancelParcel from './components/userdashboardsection/CancelParcel.jsx';
 import Settings from './components/userdashboardsection/Settings.jsx';
 import Blog from './components/footerSection/Blog.jsx';
@@ -66,7 +66,7 @@ function App() {
               <Route path="create-parcel" element={<CreateParcel />} />
               <Route path='parcel-offer' element={<ParcelOffer/>}/> 
               <Route path="update-parcel" element={<UpdateParcel />} />
-              <Route path="delete-parcel" element={<DeleteParcel />} />
+              {/* <Route path="delete-parcel" element={<DeleteParcel />} /> */}
               <Route path="cancel-parcel" element={<CancelParcel/>}/>
               <Route path="settings" element={<Settings />} />
             </Route>
