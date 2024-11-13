@@ -42,7 +42,7 @@ const UserDashboard = () => {
 
         {/* Sidebar Options */}
         <nav className="flex flex-col gap-4">
-          {['profile', 'parcel-history', 'track-parcel', 'create-parcel','parcel-offer', 'update-parcel', 'delete-parcel', 'settings'].map((item, index) => (
+          {['profile', 'create-parcel', 'parcel-history', 'track-parcel', 'update-parcel','cancel-parcel', 'settings'].map((item, index) => (
             <Link
               key={index}
               to={item}

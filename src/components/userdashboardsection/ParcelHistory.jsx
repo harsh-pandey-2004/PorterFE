@@ -82,15 +82,15 @@ const ParcelHistory = () => {
               <h3 className="text-lg font-semibold text-[#1D3557]">Tracking Number: <span className="text-[#4CAF50]">{parcel.trackingNumber}</span></h3>
               <p className="text-gray-700"><strong>From:</strong> {parcel.from}</p>
               <p className="text-gray-700"><strong>To:</strong> {parcel.to}</p>
-              <p className="text-gray-700"><strong>Quantity:</strong> {parcel.quantity}</p>
+              {/* <p className="text-gray-700"><strong>Quantity:</strong> {parcel.quantity}</p> */}
               <p className="text-gray-700"><strong>Type of Product:</strong> {parcel.productType}</p>
               <p className="text-gray-700"><strong>Urgency:</strong> {parcel.urgency}</p>
               <p className="text-gray-700"><strong>Transport Type:</strong> {parcel.transportType}</p>
               <p className="text-gray-700"><strong>Weight:</strong> {parcel.dimensions.weight} kg</p>
-              <p className="text-gray-700"><strong>Dimensions:</strong> {parcel.dimensions.width} cm (W) x {parcel.dimensions.height} cm (H)</p>
+              {/* <p className="text-gray-700"><strong>Dimensions:</strong> {parcel.dimensions.width} cm (W) x {parcel.dimensions.height} cm (H)</p> */}
               
 
-              {parcel.packing.required && (
+              {/* {parcel.packing.required && (
                 <p className="text-gray-700">
                   <strong>Packing Type:</strong>
                   {parcel.packing.type === 'standard'
@@ -99,7 +99,7 @@ const ParcelHistory = () => {
                       ? 'Custom Packing'
                       : 'Bulk Packing'}
                 </p>
-              )}
+              )} */}
 
               {/* Show Created At Date */}
               <p className="text-gray-700">

@@ -28,10 +28,9 @@ const CreateParcel = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const user = JSON.parse(localStorage.getItem('user'));  // Ensure `user` is retrieved correctly
-
+    const user = JSON.parse(localStorage.getItem('user')); 
     const parcelData = {
-      userId: user._id,  // Use actual user ID from localStorage
+      userId: user._id,  
       from: parcelDetails.from,
       to: parcelDetails.to,
       quantity: parcelDetails.quantity,
@@ -107,7 +106,7 @@ const CreateParcel = () => {
 
 
         {/* Quantity */}
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <input
             type="number"
             name="quantity"
@@ -118,7 +117,7 @@ const CreateParcel = () => {
             placeholder="Quantity"
             required
           />
-        </div>
+        </div> */}
 
         {/* Type of Product */}
         <div className="mb-4">
@@ -133,7 +132,7 @@ const CreateParcel = () => {
         </div>
 
         {/* Width and Height */}
-        <div className="mb-4 flex justify-between">
+        {/* <div className="mb-4 flex justify-between">
           <div className="w-1/2 pr-2">
             <input
               type="number"
@@ -156,7 +155,7 @@ const CreateParcel = () => {
               required
             />
           </div>
-        </div>
+        </div> */}
 
         {/* Urgency */}
         <div className="mb-4">
@@ -187,7 +186,7 @@ const CreateParcel = () => {
         </div>
 
         {/* Packing Required */}
-        <div className="mb-4 flex items-center">
+        {/* <div className="mb-4 flex items-center">
           <input
             type="checkbox"
             name="packingRequired"
@@ -197,10 +196,10 @@ const CreateParcel = () => {
           />
           <label className="text-gray-700">Do you need packing for this parcel?</label>
         </div>
-        <p className="mb-4 text-gray-500 text-sm">Select this option if your parcel requires protective packing to prevent damage during transport.</p>
+        <p className="mb-4 text-gray-500 text-sm">Select this option if your parcel requires protective packing to prevent damage during transport.</p> */}
 
         {/* Packing Type (Conditional) */}
-        {parcelDetails.packingRequired && (
+        {/* {parcelDetails.packingRequired && (
           <div className="mb-4">
             <select
               name="packingType"
@@ -224,7 +223,7 @@ const CreateParcel = () => {
               )}
             </div>
           </div>
-        )}
+        )} */}
 
         {/* Submit Button */}
         <button

@@ -7,7 +7,9 @@ const DeliveryPartnerDashboard = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    console.log('Delivery partner logged out');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    
     navigate('/login');
   };
 
@@ -40,7 +42,7 @@ const DeliveryPartnerDashboard = () => {
 
         {/* Sidebar Options for Delivery Partners */}
         <nav className="flex flex-col gap-4">
-          {['dashboard', 'parcel-bids', 'accepted-parcels', 'profile','update-details'].map((item, index) => (
+          {['dashboard', 'accepted-parcels', 'profile','update-details'].map((item, index) => (
             <Link
               key={index}
               to={item}
