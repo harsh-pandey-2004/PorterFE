@@ -46,6 +46,10 @@ const CreateParcel = () => {
     setIsPopupVisible(false);
   };
 
+  const handleConfirm=()=>{
+
+  }
+
   return (
     <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-lg mt-10">
       <h2 className="text-2xl font-bold mb-4 text-[#1D3557] text-center">Create a New Parcel</h2>
@@ -126,7 +130,7 @@ const CreateParcel = () => {
         </button>
       </form>
 
-      {isPopupVisible && (
+      {/* {isPopupVisible && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-md text-center">
             <h3 className="text-xl font-bold mb-2 text-[#1D3557]">Parcel Created Successfully!</h3>
@@ -139,7 +143,30 @@ const CreateParcel = () => {
             </button>
           </div>
         </div>
-      )}
+      )} */}
+      {isPopupVisible && (
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="bg-white p-6 rounded-lg   
+ shadow-lg max-w-md text-center">
+            <h3 className="text-xl font-bold mb-2 text-[#1D3557]">Parcel Created Successfully!</h3>
+            <p className="mb-4">Estimated Price: <span className="font-bold text-[#4FC3F7]">${price}</span></p>
+            <div className="flex justify-center space-x-4">
+                <button
+                    onClick={handleClosePopup}
+                    className="bg-[#1D3557] text-white py-2 px-4 rounded-md hover:bg-[#4FC3F7] transition duration-200 ease-in-out focus:outline-none"
+                >
+                    Confirm
+                </button>
+                <button
+                    onClick={handleClosePopup}
+                    className="bg-[#1D3557] text-white py-2 px-4 rounded-md hover:bg-[#4FC3F7] transition duration-200 ease-in-out focus:outline-none"
+                >
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+)}
     </div>
   );
 };
