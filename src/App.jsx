@@ -38,6 +38,8 @@ import AcceptedParcels from './components/deliverypartnerdashboard/AcceptedParce
 import Profile from './components/deliverypartnerdashboard/Profile.jsx';
 
 function App() {
+
+  
   return (
     
     <div className="">
@@ -59,7 +61,7 @@ function App() {
 
             {/* userdashboard */}
             <Route path="/dashboard/*" element={<UserDashboard />}>
-              <Route index element={<Navigate to="profile" />} />
+              <Route index element={<Navigate to="create-parcel" />} />
               <Route path="profile" element={<UserProfile />} />
               <Route path="parcel-history" element={<ParcelHistory />} />
               <Route path="track-parcel" element={<TrackParcel />} />
