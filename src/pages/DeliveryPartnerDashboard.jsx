@@ -42,7 +42,7 @@ const DeliveryPartnerDashboard = () => {
 
         {/* Sidebar Options for Delivery Partners */}
         <nav className="flex flex-col gap-4">
-          {['dashboard', 'accepted-parcels', 'profile','update-details'].map((item, index) => (
+          {['dashboard','parcel-bids', 'accepted-parcels', 'profile','update-details'].map((item, index) => (
             <Link
               key={index}
               to={item}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createParcel } from '../../services/userDashboard';
 
 const CreateParcel = () => {
@@ -10,10 +10,16 @@ const CreateParcel = () => {
     productType: '',
     serviceLevel: 'regular',
     weight: '',
-     
   });
   const [price, setPrice] = useState(null);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
+
+  useEffect(() => {
+    const storedParcelData = JSON.parse(localStorage.getItem('savedParcelData'));
+    if (storedParcelData) {
+      setParcelDetails(storedParcelData); 
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,6 +27,12 @@ const CreateParcel = () => {
       ...parcelDetails,
       [name]: value,
     });
+
+    
+    localStorage.setItem('savedParcelData', JSON.stringify({
+      ...parcelDetails,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -32,11 +44,10 @@ const CreateParcel = () => {
     };
 
     try {
-      console.log(parcelData);
       const response = await createParcel(parcelData);
-      setPrice(response.data.price); 
-      setIsPopupVisible(true); 
-      console.log('Parcel created:', response.data);
+      setPrice(response.data.price);
+      setIsPopupVisible(true);
+      localStorage.removeItem('savedParcelData'); 
     } catch (error) {
       console.error("Error creating parcel:", error);
     }
@@ -44,11 +55,16 @@ const CreateParcel = () => {
 
   const handleClosePopup = () => {
     setIsPopupVisible(false);
+    setParcelDetails({
+      from: '',
+      to: '',
+      vehicleType: 'Bike',
+      distance: 15,
+      productType: '',
+      serviceLevel: 'regular',
+      weight: '',
+    });
   };
-
-  const handleConfirm=()=>{
-
-  }
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-lg mt-10">
@@ -130,49 +146,33 @@ const CreateParcel = () => {
         </button>
       </form>
 
-      {/* {isPopupVisible && (
+      {/* Popup for success */}
+      {isPopupVisible && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-md text-center">
             <h3 className="text-xl font-bold mb-2 text-[#1D3557]">Parcel Created Successfully!</h3>
-            <p className="mb-4">Estimated Price: <span className="font-bold text-[#4FC3F7]">${price}</span></p>
-            <button
-              onClick={handleClosePopup}
-              className="bg-[#1D3557] text-white py-2 px-4 rounded-md hover:bg-[#4FC3F7] transition duration-200 ease-in-out focus:outline-none"
-            >
-              Close
-            </button>
+            <p className="mb-4">Estimated Price: <span className="font-bold text-[#4FC3F7]">Rs.{price}</span></p>
+            <div className="flex justify-center space-x-4">
+              <button
+                onClick={handleClosePopup}
+                className="bg-[#1D3557] text-white py-2 px-4 rounded-md hover:bg-[#4FC3F7] transition duration-200 ease-in-out focus:outline-none"
+              >
+                Confirm
+              </button>
+              <button
+                onClick={handleClosePopup}
+                className="bg-[#1D3557] text-white py-2 px-4 rounded-md hover:bg-[#4FC3F7] transition duration-200 ease-in-out focus:outline-none"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
-      )} */}
-      {isPopupVisible && (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-        <div className="bg-white p-6 rounded-lg   
- shadow-lg max-w-md text-center">
-            <h3 className="text-xl font-bold mb-2 text-[#1D3557]">Parcel Created Successfully!</h3>
-            <p className="mb-4">Estimated Price: <span className="font-bold text-[#4FC3F7]">${price}</span></p>
-            <div className="flex justify-center space-x-4">
-                <button
-                    onClick={handleClosePopup}
-                    className="bg-[#1D3557] text-white py-2 px-4 rounded-md hover:bg-[#4FC3F7] transition duration-200 ease-in-out focus:outline-none"
-                >
-                    Confirm
-                </button>
-                <button
-                    onClick={handleClosePopup}
-                    className="bg-[#1D3557] text-white py-2 px-4 rounded-md hover:bg-[#4FC3F7] transition duration-200 ease-in-out focus:outline-none"
-                >
-                    Cancel
-                </button>
-            </div>
-        </div>
-    </div>
-)}
+      )}
     </div>
   );
 };
 
 export default CreateParcel;
-
-
 
 

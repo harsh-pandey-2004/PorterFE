@@ -1,100 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { updateDetails } from '../../services/deliveryPartnerDashboard';
 
 const UpdateDetails = () => {
-  // const [formData, setFormData] = useState({
-  //   personalInfo: {
-  //     address: '',
-  //     emergencyContactName: '',
-  //     emergencyContactPhone: '',
-  //   },
-  //   aadharAndDriving: {
-  //     aadharNumber: '',
-  //     aadharFile: null,
-  //     drivingLicenseNumber: '',
-  //     drivingLicenseFile: null,
-  //   },
-  //   vehicleInfo: {
-  //     vehicleRegistrationNumber: '',
-  //     vehicleType: '',
-  //     vehicleModel: '',
-  //     vehicleYear: '',
-  //     vehicleRegistrationFile: null,
-  //     pollutionCertificateFile: null,
-  //   },
-  //   bankAccount: {
-  //     accountHolderName: '',
-  //     accountNumber: '',
-  //     bankName: '',
-  //     ifscCode: '',
-  //   },
-  //   insuranceAndPreferences: {
-  //     insuranceDetails: '',
-  //     preferredWorkingHours: '',
-  //     preferredDeliveryRegions: '',
-  //     criminalRecordDeclaration: '',
-  //     password: '',
-  //   },
-  // });
-
-  // const [currentStep, setCurrentStep] = useState(1);
-
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-
-  //   // Handle nested form data updates
-  //   if (name.startsWith('personalInfo.')) {
-  //     const field = name.split('.')[1];
-  //     setFormData((prev) => ({
-  //       ...prev,
-  //       personalInfo: { ...prev.personalInfo, [field]: value },
-  //     }));
-  //   } else if (name.startsWith('aadharAndDriving.')) {
-  //     const field = name.split('.')[1];
-  //     setFormData((prev) => ({
-  //       ...prev,
-  //       aadharAndDriving: { ...prev.aadharAndDriving, [field]: value },
-  //     }));
-  //   } else if (name.startsWith('vehicleInfo.')) {
-  //     const field = name.split('.')[1];
-  //     setFormData((prev) => ({
-  //       ...prev,
-  //       vehicleInfo: { ...prev.vehicleInfo, [field]: value },
-  //     }));
-  //   } else if (name.startsWith('bankAccount.')) {
-  //     const field = name.split('.')[1];
-  //     setFormData((prev) => ({
-  //       ...prev,
-  //       bankAccount: { ...prev.bankAccount, [field]: value },
-  //     }));
-  //   } else if (name.startsWith('insuranceAndPreferences.')) {
-  //     const field = name.split('.')[1];
-  //     setFormData((prev) => ({
-  //       ...prev,
-  //       insuranceAndPreferences: { ...prev.insuranceAndPreferences, [field]: value },
-  //     }));
-  //   } else if (
-  //     name === 'aadharFile' ||
-  //     name === 'drivingLicenseFile' ||
-  //     name === 'vehicleRegistrationFile' ||
-  //     name === 'pollutionCertificateFile'
-  //   ) {
-  //     setFormData((prev) => ({
-  //       ...prev,
-  //       [name]: e.target.files[0],
-  //     }));
-  //   }
-  // };
-
-  // const handleNext = () => setCurrentStep((prev) => prev + 1);
-  // const handlePrevious = () => setCurrentStep((prev) => prev - 1);
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   console.log(formData);
-  // };
-
-  const [formData, setFormData] = useState(() => {
-    // Check if data is in localStorage and return it if available
+  
+const [formData, setFormData] = useState(() => {
+   
+    const user = JSON.parse(localStorage.getItem('user'));
+    const userId=user._id;
+    
     const savedData = localStorage.getItem('formData');
     return savedData ? JSON.parse(savedData) : {
       personalInfo: {
@@ -127,14 +40,15 @@ const UpdateDetails = () => {
         preferredWorkingHours: '',
         preferredDeliveryRegions: '',
         criminalRecordDeclaration: '',
-        password: '',
+        
       },
+      userId: userId || '',
     };
   });
 
   const [currentStep, setCurrentStep] = useState(1);
 
-  // Save the form data to localStorage whenever formData changes
+  
   useEffect(() => {
     localStorage.setItem('formData', JSON.stringify(formData));
   }, [formData]);
@@ -189,10 +103,44 @@ const UpdateDetails = () => {
   const handleNext = () => setCurrentStep((prev) => prev + 1);
   const handlePrevious = () => setCurrentStep((prev) => prev - 1);
 
-  const handleSubmit = (e) => {
+  
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+  
+    const formToSend = new FormData();
+    // Append all form fields to FormData object
+    formToSend.append('personalInfo.address', formData.personalInfo.address);
+    formToSend.append('personalInfo.emergencyContactName', formData.personalInfo.emergencyContactName);
+    formToSend.append('personalInfo.emergencyContactPhone', formData.personalInfo.emergencyContactPhone);
+    formToSend.append('aadharAndDriving.aadharNumber', formData.aadharAndDriving.aadharNumber);
+    formToSend.append('aadharFile', formData.aadharAndDriving.aadharFile);
+    formToSend.append('aadharAndDriving.drivingLicenseNumber', formData.aadharAndDriving.drivingLicenseNumber);
+    formToSend.append('drivingLicenseFile', formData.aadharAndDriving.drivingLicenseFile);
+    formToSend.append('vehicleInfo.vehicleRegistrationNumber', formData.vehicleInfo.vehicleRegistrationNumber);
+    formToSend.append('vehicleInfo.vehicleType', formData.vehicleInfo.vehicleType);
+    formToSend.append('vehicleInfo.vehicleModel', formData.vehicleInfo.vehicleModel);
+    formToSend.append('vehicleInfo.vehicleYear', formData.vehicleInfo.vehicleYear);
+    formToSend.append('vehicleRegistrationFile', formData.vehicleInfo.vehicleRegistrationFile);
+    formToSend.append('pollutionCertificateFile', formData.vehicleInfo.pollutionCertificateFile);
+    formToSend.append('bankAccount.accountHolderName', formData.bankAccount.accountHolderName);
+    formToSend.append('bankAccount.accountNumber', formData.bankAccount.accountNumber);
+    formToSend.append('bankAccount.bankName', formData.bankAccount.bankName);
+    formToSend.append('bankAccount.ifscCode', formData.bankAccount.ifscCode);
+    formToSend.append('insuranceAndPreferences.insuranceDetails', formData.insuranceAndPreferences.insuranceDetails);
+    formToSend.append('insuranceAndPreferences.preferredWorkingHours', formData.insuranceAndPreferences.preferredWorkingHours);
+    formToSend.append('insuranceAndPreferences.preferredDeliveryRegions', formData.insuranceAndPreferences.preferredDeliveryRegions);
+    formToSend.append('insuranceAndPreferences.criminalRecordDeclaration', formData.insuranceAndPreferences.criminalRecordDeclaration);
+    
+  
+    try {
+      const response = await updateDetails(formToSend); 
+      console.log('Form submitted successfully', response);
+    } catch (error) {
+      console.error('Form submission error', error);
+    }
   };
+  
 
   return (
     <form onSubmit={handleSubmit} className="max-w-lg mx-auto p-4 space-y-6">

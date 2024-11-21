@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { getPartner, updatePartner } from '../../services/deliveryPartnerDashboard';
 
 const Profile = () => {
   const [profile, setProfile] = useState({
@@ -8,11 +9,11 @@ const Profile = () => {
     vehicleType: '',
   });
 
-  // State to toggle between view and edit mode
+  
   const [editable, setEditable] = useState(false);
 
   useEffect(() => {
-    // Set initial data for demonstration; replace with real data as needed
+  
     const initialProfile = {
       name: 'Atul Kumar',
       mobileNumber: '96911 36377',
@@ -22,6 +23,18 @@ const Profile = () => {
     setProfile(initialProfile);
   }, []);
 
+  // useEffect(() => {
+  //   const fetchPartner = async () => {
+  //     try {
+  //       const response = await getPartner();
+  //       setProfile(response.data);
+  //     } catch (error) {
+  //       console.error('Error fetching Partner:', error);
+  //     }
+  //   };
+  //   fetchPartner();
+  // }, []);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setProfile((prevProfile) => ({
@@ -29,6 +42,16 @@ const Profile = () => {
       [name]: value,
     }));
   };
+
+  // const handleSave = async () => {
+  //   try {
+  //     const response = await updatePartner(profile); 
+  //     console.log(response.data);
+  //     setEditable(false); 
+  //   } catch (error) {
+  //     console.error('Error updating profile:', error);
+  //   }
+  // };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
