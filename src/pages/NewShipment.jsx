@@ -65,6 +65,9 @@ const NewShipment = () => {
       }
       return;
     }
+    // if(user && user.role==="user"){
+
+    // }
 
     handleFormSubmit(parcelData);
   };

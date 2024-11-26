@@ -74,7 +74,22 @@ const getUser = async () => {
       return error;
     }
   }
+
+  const deleteParcel = async (trackingNumber) => {
+    try {
+      const response = await axios.delete(`${BACKEND_URL}/api/parcels/${trackingNumber}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${localStorage.getItem('token')}`,
+        },
+      });
+      return response;
+    } catch (error) {
+      console.error("Error fetching user profile:", error.response?.data || error.message);
+      return error;
+    }
+  };
   
 
 
-export {getUser,updateUser,createParcel,getParcel,trackParcel};
+export {getUser,updateUser,createParcel,getParcel,trackParcel,deleteParcel};

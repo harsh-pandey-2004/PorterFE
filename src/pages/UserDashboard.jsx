@@ -65,7 +65,7 @@ const UserDashboard = () => {
             'create-parcel',
             'parcel-history',
             'track-parcel',
-            'update-parcel',
+            // 'update-parcel',
             'cancel-parcel',
             'settings',
           ].map((item, index) => (

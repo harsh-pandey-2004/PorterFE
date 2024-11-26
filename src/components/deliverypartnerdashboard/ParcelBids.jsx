@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { getParcel } from '../../services/userDashboard';
 
 const ParcelBids = () => {
   const [parcels, setParcels] = useState([]);
@@ -38,6 +39,21 @@ const ParcelBids = () => {
 
     setParcels(exampleData);
   }, []);
+
+  // useEffect(() => {
+  //   const fetchParcels = async () => {
+  //     try {
+  //       const response = await getParcel();
+  //       console.log(response) // Fetch parcels from backend
+  //       setParcels(response.data); // Ensure the response structure matches your backend
+  //     } catch (err) {
+  //       setError('Failed to load parcels');
+  //       console.error('Error fetching parcels:', err);
+  //     } 
+  //   };
+
+  //   fetchParcels();
+  // }, []);
 
   const handleConfirmParcel = (parcelId) => {
     setParcelStatus((prev) => ({
