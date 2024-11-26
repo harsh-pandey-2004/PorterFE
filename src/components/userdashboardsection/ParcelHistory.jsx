@@ -124,7 +124,7 @@ const ParcelHistory = () => {
   const [parcelList, setParcelList] = useState([]);
 
   useEffect(() => {
-    const fetchUser = async () => {
+    const fetchParcel = async () => {
       try {
         const response = await getParcel();
         setParcelList(response.data);
@@ -132,7 +132,7 @@ const ParcelHistory = () => {
         console.error('Error fetching parcels:', error);
       }
     };
-    fetchUser();
+    fetchParcel();
   }, []);
 
   return (

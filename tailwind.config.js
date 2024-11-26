@@ -15,7 +15,17 @@ export default {
         accentDanger: '#F44336',  // Danger Red
         darkGray: '#6C757D',     // Dark Gray
         lightGray: '#E0E0E0',    // Divider Gray
-      }
+      },
+      keyframes: {
+        moveRight: {
+          '0%': { transform: 'translateX(-100%)', opacity: '0' },
+          '50%': { opacity: '0.5' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
+        },
+      },
+      animation: {
+        'move-right': 'moveRight 2s ease-in-out',
+      },
     },
   },
   plugins: [],

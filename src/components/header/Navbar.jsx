@@ -55,7 +55,7 @@ function Navbar() {
       {/* Left Side: Logo */}
       <div className="flex items-center">
         <Link to="/">
-          <img src={logo} alt="BookMyTransport Logo" className="h-10 md:h-12 lg:h-14" />
+          <img src={logo} alt="BookMyTransport Logo" className="h-10 md:h-12 lg:h-14 animate-move-right" />
         </Link>
       </div>
 
