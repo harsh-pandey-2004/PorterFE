@@ -50,23 +50,23 @@ const HeroWithOverlay = () => {
             {/* Icons */}
             <div className="flex flex-wrap justify-around items-center w-full space-y-4 sm:space-y-0 sm:space-x-6">
               <div className="flex flex-col items-center cursor-pointer w-1/2 sm:w-auto" onClick={() => handleIconClick('Bike Delivery')}>
-                <FaMotorcycle className="text-4xl text-[#1D3557]" />
+                <FaMotorcycle className="text-4xl text-yellow-500 size-16"/>
                 <p className="text-center">Bike Delivery</p>
               </div>
               <div className="flex flex-col items-center cursor-pointer w-1/2 sm:w-auto" onClick={() => handleIconClick('E-Rickshaw Delivery')}>
-                <FaCarSide className="text-4xl text-[#1D3557]" />
+                <FaCarSide className="text-4xl text-yellow-500 size-16" />
                 <p className="text-center">E-Rickshaw Delivery</p>
               </div>
               <div className="flex flex-col items-center cursor-pointer w-1/2 sm:w-auto" onClick={() => handleIconClick('Truck Delivery')}>
-                <FaTruck className="text-4xl text-[#1D3557]" />
+                <FaTruck className="text-4xl text-yellow-500 size-16" />
                 <p className="text-center">Truck Delivery</p>
               </div>
-              <div className="flex flex-col items-center cursor-pointer w-1/2 sm:w-auto" onClick={() => handleIconClick('Packers & Movers')}>
-                <FaBoxOpen className="text-4xl text-[#1D3557]" />
+              {/* <div className="flex flex-col items-center cursor-pointer w-1/2 sm:w-auto" onClick={() => handleIconClick('Packers & Movers')}>
+                <FaBoxOpen className="text-4xl text-yellow-500 size-16" />
                 <p className="text-center">Packers & Movers</p>
-              </div>
+              </div> */}
               <div className="flex flex-col items-center cursor-pointer w-1/2 sm:w-auto" onClick={() => handleIconClick('All India Parcel')}>
-                <FaGlobe className="text-4xl text-[#1D3557]" />
+                <FaGlobe className="text-4xl text-yellow-500 size-16" />
                 <p className="text-center">All India Parcel</p>
               </div>
             </div>

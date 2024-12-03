@@ -10,8 +10,6 @@ function Navbar() {
   const [userRole, setUserRole] = useState(null);
   const navigate = useNavigate();
 
-  
-
   useEffect(() => {
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
@@ -50,6 +48,12 @@ function Navbar() {
     setIsOpen(false);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    navigate('/login');
+  };
+
   return (
     <nav className="bg-primary text-white p-4 flex justify-between items-center relative">
       {/* Left Side: Logo */}
@@ -75,12 +79,21 @@ function Navbar() {
         <li><Link to="/reports" className="block hover:text-yellow-300 px-4 py-2 rounded-md transition">Delivery Partners</Link></li>
         {isLoggedIn && (
           // <li><Link to="/dashboard" className="block hover:text-yellow-300 px-4 py-2 rounded-md transition">Dashboard</Link></li>
+          <>
           <Link 
               to={userRole === 'delivery_partner' ? "/partner-dashboard" : "/dashboard"} 
               className="block hover:text-yellow-300 px-4 py-2 rounded-md transition"
             >
               Dashboard
             </Link>
+            <button
+              onClick={handleLogout}
+              className="hover:text-yellow-300 px-4 py-2 rounded-md transition"
+            >
+              Logout
+            </button>
+          </>
+            
         )}
         {!isLoggedIn && (
           <li><Link to="/login" className="block hover:text-yellow-300 px-4 py-2 rounded-md transition">Login</Link></li>
@@ -98,7 +111,16 @@ function Navbar() {
           <li><Link to="/new-shipment" className="block hover:bg-[#4FC3F7] px-4 py-2 rounded-md transition" onClick={handleLinkClick}>New Shipment</Link></li>
           <li><Link to="/reports" className="block hover:bg-[#4FC3F7] px-4 py-2 rounded-md transition" onClick={handleLinkClick}>Delivery Partners</Link></li>
           {isLoggedIn ? (
-            <li><Link to="/dashboard" className="block hover:bg-[#4FC3F7] px-4 py-2 rounded-md transition" onClick={handleLinkClick}>Dashboard</Link></li>
+            <><li><Link to="/dashboard" className="block hover:bg-[#4FC3F7] px-4 py-2 rounded-md transition" onClick={handleLinkClick}>Dashboard</Link></li>
+            <li>
+                <button
+                  onClick={handleLogout}
+                  className="block w-full text-left hover:bg-[#4FC3F7] px-4 py-2 rounded-md transition"
+                >
+                  Logout
+                </button>
+              </li>
+            </>
           ) : (
             <li>
               <Link
