@@ -88,13 +88,13 @@ const UserDashboard = () => {
         <div className="flex-grow"></div>
 
         {/* Logout Button */}
-        <button
+        {/* <button
           onClick={handleLogout}
           className="py-2 px-4 bg-red-500 text-white rounded-lg text-center transition-all duration-200 ease-in-out hover:bg-red-600 
           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600"
         >
           Logout
-        </button>
+        </button> */}
       </div>
 
       {/* Main Content */}

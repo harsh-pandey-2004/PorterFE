@@ -25,7 +25,7 @@ const Footer = () => {
             <ul className="flex flex-col space-y-2 text-sm sm:text-base lg:text-lg">
               <div className="flex flex-wrap justify-center space-x-4">
                 {/* First Row of Links */}
-                {['About_us', 'Services', 'FAQ', 'Contact_us'].map((link) => (
+                {['About us', 'Services', 'FAQ', 'Contact us'].map((link) => (
                   <li className="flex-shrink-0" key={link}>
                     <Link
                       to={`/${link.toLowerCase().replace(/\s+/g, '-')}`} // Dynamically create link paths

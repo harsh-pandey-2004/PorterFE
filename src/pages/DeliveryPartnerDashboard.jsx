@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import { useNavigate, Link, Outlet } from 'react-router-dom';
 import { FaBars, FaTimes } from 'react-icons/fa';
 
 const DeliveryPartnerDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [user,setUser]=useState(null);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -12,10 +13,27 @@ const DeliveryPartnerDashboard = () => {
     
     navigate('/login');
   };
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    if (storedUser) {
+      setUser(storedUser); 
+    } else {
+      
+      navigate('/login');
+    }
+  }, [navigate]);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+
+  if (!user) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <p className="text-xl font-semibold">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="h-screen flex flex-col lg:flex-row relative">
@@ -36,13 +54,13 @@ const DeliveryPartnerDashboard = () => {
         
         {/* Delivery Partner Details */}
         <div className="mb-8 text-center lg:text-left">
-          <h2 className="text-2xl font-bold tracking-wide">Welcome, Delivery Partner</h2>
-          <p className="text-sm mt-1 text-[#F5F5F5]">partner@example.com</p>
+          <h2 className="text-2xl font-bold tracking-wide">Welcome Partner, {user.firstName}</h2>
+          <p className="text-sm mt-1 text-[#F5F5F5]">{user.email}</p>
         </div>
 
         {/* Sidebar Options for Delivery Partners */}
         <nav className="flex flex-col gap-4">
-          {['dashboard','parcel-bids', 'accepted-parcels', 'profile','update-details'].map((item, index) => (
+          {['dashboard','available-parcels', 'accepted-parcels', 'profile','update-details'].map((item, index) => (
             <Link
               key={index}
               to={item}
@@ -59,13 +77,13 @@ const DeliveryPartnerDashboard = () => {
         <div className="flex-grow"></div>
 
         {/* Logout Button */}
-        <button
+        {/* <button
           onClick={handleLogout}
           className="py-2 px-4 bg-red-500 text-white rounded-lg text-center transition-all duration-200 ease-in-out hover:bg-red-600 
           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600"
         >
           Logout
-        </button>
+        </button> */}
       </div>
 
       {/* Main Content */}
