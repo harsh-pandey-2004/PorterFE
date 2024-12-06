@@ -77,7 +77,7 @@ const CreateParcel = () => {
             value={parcelDetails.from}
             onChange={handleChange}
             className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#4FC3F7] focus:outline-none"
-            placeholder="From (Sender's Address)"
+            placeholder="From (Sender's Name, Number, Address)"
             required
           />
         </div>
@@ -88,7 +88,7 @@ const CreateParcel = () => {
             value={parcelDetails.to}
             onChange={handleChange}
             className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#4FC3F7] focus:outline-none"
-            placeholder="To (Receiver's Address)"
+            placeholder="To (Recipient's Name, Number, Address)"
             required
           />
         </div>

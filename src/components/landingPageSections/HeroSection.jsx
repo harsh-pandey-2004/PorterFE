@@ -21,10 +21,10 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="container mx-auto text-center relative z-10">
         {/* Responsive text size for the heading */}
-        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold">Welcome to BookMyTransport</h1>
+        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold">Welcome to Book My Transport</h1>
         {/* <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold">Track, Trace, Deliver. Your Parcels, Our Priority.</h1> */}
         {/* Responsive text size for the paragraph */}
-        <p className="mt-4 text-lg md:text-xl lg:text-2xl">Your trusted partner in parcel tracking and management.</p>
+        <p className="mt-4 text-lg md:text-xl lg:text-2xl">Your Trusted Partner for Intra-City Delivery.</p>
         {/* <p className="mt-4 text-lg md:text-xl lg:text-2xl">BookMyTransport: Your trusted partner for seamless parcel management.</p> */}
 
         <a href="/new-shipment" className="mt-6 inline-block bg-[#4FC3F7] text-[#1D3557] py-2 px-4 rounded-lg hover:bg-[#3A9BB2] transition">

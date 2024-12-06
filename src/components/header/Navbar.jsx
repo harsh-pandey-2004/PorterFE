@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import logo from '../../assets/logobookmytransport_processed.png';
+import logo from '../../assets/logo.png';
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -59,7 +59,7 @@ function Navbar() {
       {/* Left Side: Logo */}
       <div className="flex items-center">
         <Link to="/">
-          <img src={logo} alt="BookMyTransport Logo" className="h-10 md:h-12 lg:h-14 animate-move-right" />
+          <img src={logo} alt="BookMyTransport Logo" className="h-12 md:h-14 lg:h-16 animate-move-right" />
         </Link>
       </div>
 
@@ -74,7 +74,9 @@ function Navbar() {
       {/* Normal Navbar for large screens */}
       <ul className="hidden lg:flex lg:space-x-8">
         <li><Link to="/" className="block hover:text-yellow-300 px-4 py-2 rounded-md transition">Home</Link></li>
-        <li><Link to="/track" className="block hover:text-yellow-300 px-4 py-2 rounded-md transition">Track Parcels</Link></li>
+        <li><Link to='/user' className='block hover:text-yellow-300 px-4 py-2 rounded-md transition'>User</Link></li>
+        <li><Link to='/business' className='block hover:text-yellow-300 px-4 py-2 rounded-md transition'>Business</Link></li>
+        {/* <li><Link to="/track" className="block hover:text-yellow-300 px-4 py-2 rounded-md transition">Track Parcels</Link></li> */}
         <li><Link to="/new-shipment" className="block hover:text-yellow-300 px-4 py-2 rounded-md transition">New Shipment</Link></li>
         <li><Link to="/reports" className="block hover:text-yellow-300 px-4 py-2 rounded-md transition">Delivery Partners</Link></li>
         {isLoggedIn && (
@@ -107,7 +109,9 @@ function Navbar() {
           className="absolute bg-[#1D3557] right-2 top-14 md:hidden space-y-4 z-50 p-4 w-40 rounded-md"
         >
           <li><Link to="/" className="block hover:bg-[#4FC3F7] px-4 py-2 rounded-md transition" onClick={handleLinkClick}>Home</Link></li>
-          <li><Link to="/track" className="block hover:bg-[#4FC3F7] px-4 py-2 rounded-md transition" onClick={handleLinkClick}>Track Parcels</Link></li>
+          <li><Link to='/user' className='block hover:bg-[#4FC3F7] px-4 py-2 rounded-md transition' onClick={handleLinkClick}>User</Link></li>
+        <li><Link to='/business' className='block hover:bg-[#4FC3F7] px-4 py-2 rounded-md transition' onClick={handleLinkClick}>Business</Link></li>
+          {/* <li><Link to="/track" className="block hover:bg-[#4FC3F7] px-4 py-2 rounded-md transition" onClick={handleLinkClick}>Track Parcels</Link></li> */}
           <li><Link to="/new-shipment" className="block hover:bg-[#4FC3F7] px-4 py-2 rounded-md transition" onClick={handleLinkClick}>New Shipment</Link></li>
           <li><Link to="/reports" className="block hover:bg-[#4FC3F7] px-4 py-2 rounded-md transition" onClick={handleLinkClick}>Delivery Partners</Link></li>
           {isLoggedIn ? (

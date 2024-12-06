@@ -36,6 +36,8 @@ import Dashboard from './components/deliverypartnerdashboard/Dashboard.jsx';
 import ParcelBids from './components/deliverypartnerdashboard/ParcelBids.jsx';
 import AcceptedParcels from './components/deliverypartnerdashboard/AcceptedParcels.jsx';
 import Profile from './components/deliverypartnerdashboard/Profile.jsx';
+import User from './pages/User.jsx';
+import Business from './pages/Business.jsx';
 
 function App() {
 
@@ -51,6 +53,8 @@ function App() {
             <Route path="/" element={<Home />} />
             {/* <Route path="/" element={<HeroWithOverlay />} /> */}
             <Route path="/estimate-results" element={<EstimateResults />} />
+            <Route path='/user' element={<User/>}/>
+            <Route path='/business' element={<Business/>}/>
             <Route path="/track" element={<TrackParcels />} />
             <Route path="/new-shipment" element={<NewShipment />} />
             <Route path="/reports" element={<Reports />} />
