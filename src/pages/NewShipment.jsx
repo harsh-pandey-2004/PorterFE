@@ -138,7 +138,7 @@ const NewShipment = () => {
                 value={formData.from}
                 onChange={handleChange}
                 required
-                placeholder="From (Sender's Address)"
+                placeholder="From (Sender's Name, Number, Address)"
                 className="w-full border border-[#E0E0E0] rounded-lg p-4 text-lg focus:ring-2 focus:ring-[#4FC3F7] mb-6"
               />
               <input
@@ -147,7 +147,7 @@ const NewShipment = () => {
                 value={formData.to}
                 onChange={handleChange}
                 required
-                placeholder="To (Recipient's Address)"
+                placeholder="To (Recipient's Name, Number, Address)"
                 className="w-full border border-[#E0E0E0] rounded-lg p-4 text-lg focus:ring-2 focus:ring-[#4FC3F7] mb-6"
               />
               <input

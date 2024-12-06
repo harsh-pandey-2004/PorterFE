@@ -36,7 +36,7 @@ const ContactUs = () => {
               <p className="font-semibold">Email:</p>
               <p className="text-blue-500 mb-4"><a href="mailto:support@bookmytransport.com">support@bookmytransport.com</a></p>
               <p className="font-semibold">Phone:</p>
-              <p className="text-blue-500"><a href="tel:+123456789">+1 234 567 89</a></p>
+              <p className="text-blue-500"><a href="tel:+123456789">+91 9623947997</a></p>
             </div>
           </div>
         </div>
