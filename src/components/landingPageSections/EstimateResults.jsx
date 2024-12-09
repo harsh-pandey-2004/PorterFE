@@ -98,9 +98,13 @@ import threewheeler from '../../assets/threewheeler.jpeg';
 const EstimateResults = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { formData, selectedService } = location.state || {};
-  const { pickup, drop } = formData || {};
-  const distance = 10; // Example distance between pickup and drop
+  const { pickup,drop, selectedService,twoPlaceDistance} = location.state || {};
+  console.log(selectedService)
+  // console.log(twoPlaceDistance)
+  // const { pickup, drop } = formData || {};
+  console.log(pickup,drop);
+  const distance = parseFloat(twoPlaceDistance.split()[0]); // Example distance between pickup and drop
+  console.log(distance)
   const price = distance * 10; // 1 km = 10 rs
 
   const handleBookingClick = () => {
@@ -135,7 +139,8 @@ const EstimateResults = () => {
           {renderIcon()}
           <div>
             <h2 className="text-lg sm:text-2xl md:text-3xl font-bold">{selectedService}</h2>
-            <p className="text-sm sm:text-base md:text-lg">Estimated Price: {price} Rs</p>
+            
+            <p className="text-sm sm:text-base md:text-lg">Estimated Price: Rs.{price}</p>
           </div>
         </div>
 

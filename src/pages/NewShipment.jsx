@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { createParcel } from '../services/userDashboard';
 import { useNavigate } from 'react-router-dom';
 import BookMyTransport from '../assets/Book my transport.png';
+import axios from 'axios'
 
 const NewShipment = () => {
   const [formData, setFormData] = useState({
     from: '',
     to: '',
     vehicleType: 'Bike',
-    distance: 15,
+    distance: 0,
     productType: '',
     serviceLevel: 'regular',
     weight: '',
@@ -38,6 +39,43 @@ const NewShipment = () => {
     });
   };
 
+  const handleEstimateClick = async (pickup, drop) => {
+    // Destructure pickup and drop addresses (assuming passed as arguments)
+
+    if (!pickup || !drop) {
+      // Handle missing address case (optional)
+      alert('Please enter both pickup and drop addresses!');
+      return null; // Return null for missing addresses
+    }
+
+    const apiKey = 'AlzaSyT-vBt2bBSn2ZnJA_3iUny4TW958DF7t0Y'; // Replace with your actual GoMaps.pro API key
+    const url = `https://maps.gomaps.pro/maps/api/directions/json?destination=${drop}&origin=${pickup}&key=${apiKey}`;
+
+    try {
+      const response = await axios.get(url);
+
+      if (response.data.status === 'OK') {
+        // Handle successful directions response
+        const directions = response.data.routes[0];
+        const twoPlaceDistance = directions.legs[0].distance.text; // Get distance with unit
+
+        // Extract the numeric distance from the text
+        const distance = parseFloat(twoPlaceDistance.split()[0]);
+
+        return distance;
+      } else {
+        // Handle errors
+        console.error('Directions API error:', response.data.error_message);
+        alert('Could not retrieve directions. Please try again later.');
+        return null;
+      }
+    } catch (error) {
+      console.error('Error fetching directions:', error);
+      alert('An error occurred. Please try again later.');
+      return null;
+    }
+  };
+
   const handleFormSubmit = async (parcelData) => {
     try {
       const response = await createParcel(parcelData);
@@ -49,27 +87,35 @@ const NewShipment = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const parcelData = {
-      userId: user ? user._id : null,
-      ...formData,
-    };
+    const distance = await handleEstimateClick(formData.from, formData.to);
+    console.log(formData.from,formData.to);
+    console.log(distance);
+    if (distance !== null) {
+      const updatedParcelDetails = { ...formData, distance: distance }
+      setFormData(updatedParcelDetails);
+      console.log(updatedParcelDetails);
+      const parcelData = {
+        userId: user ? user._id : null,
+        ...updatedParcelDetails,
+      };
 
-    if (!user) {
-      try {
-        localStorage.setItem('savedParcelData', JSON.stringify(parcelData));
-        setIsLoginPopupVisible(true); // Show login popup if not logged in
-      } catch (error) {
-        console.error('Error saving parcel data to local storage:', error);
+      if (!user) {
+        try {
+          localStorage.setItem('savedParcelData', JSON.stringify(parcelData));
+          setIsLoginPopupVisible(true); // Show login popup if not logged in
+        } catch (error) {
+          console.error('Error saving parcel data to local storage:', error);
+        }
+        return;
       }
-      return;
+
+
+      handleFormSubmit(parcelData);
+    } else {
+      console.error("Error retrieving distance. Please try again.");
     }
-    // if(user && user.role==="user"){
-
-    // }
-
-    handleFormSubmit(parcelData);
   };
 
   const handleClosePopup = () => {
