@@ -13,6 +13,7 @@ import CallToActionSection from './CallToActionSection';
 import { useNavigate } from 'react-router-dom';
 import OurServicesInCities from './OurServicesInCities';
 import WhyBookMyTransport from './WhyBookMyTransport';
+import axios from 'axios';
 
 
 const HeroWithOverlay = () => {
@@ -44,8 +45,43 @@ const HeroWithOverlay = () => {
 
 
 
-  const handleEstimateClick = () => {
-    navigate('/estimate-results', { state: { formData, selectedService } });
+  // const handleEstimateClick = () => {
+  //   navigate('/estimate-results', { state: { formData, selectedService } });
+  // };
+
+  const handleEstimateClick = async () => {
+    const { pickup, drop } = formData; // Destructure pickup and drop addresses
+
+    if (!pickup || !drop) {
+      // Handle missing address case (optional)
+      alert('Please enter both pickup and drop addresses!');
+      return;
+    }
+
+    const apiKey = 'AlzaSyT-vBt2bBSn2ZnJA_3iUny4TW958DF7t0Y'; // Replace with your API key
+    const url = `https://maps.gomaps.pro/maps/api/directions/json?destination=${drop}&origin=${pickup}&key=${apiKey}`;
+
+    try {
+      const response = await axios.get(url);
+
+      if (response.data.status === 'OK') {
+        // Handle successful directions response
+        const directions = response.data.routes[0];
+        const twoPlaceDistance = directions.legs[0].distance.text;
+        // console.log(distance)
+        console.log('Directions:', directions.legs[0].distance); // Log directions for debugging
+        // You can use the directions data to display on a map or calculate estimated time/distance
+
+        navigate('/estimate-results', { state: { pickup,drop, selectedService,twoPlaceDistance } }); // Send directions data to estimate results (optional)
+      } else {
+        // Handle errors
+        console.error('Directions API error:', response.data.error_message);
+        alert('Could not retrieve directions. Please try again later.');
+      }
+    } catch (error) {
+      console.error('Error fetching directions:', error);
+      alert('An error occurred. Please try again later.');
+    }
   };
 
   return (
