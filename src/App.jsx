@@ -36,8 +36,12 @@ import Dashboard from './components/deliverypartnerdashboard/Dashboard.jsx';
 import ParcelBids from './components/deliverypartnerdashboard/ParcelBids.jsx';
 import AcceptedParcels from './components/deliverypartnerdashboard/AcceptedParcels.jsx';
 import Profile from './components/deliverypartnerdashboard/Profile.jsx';
+import User from './pages/User.jsx';
+import Business from './pages/Business.jsx';
 
 function App() {
+
+  
   return (
     
     <div className="">
@@ -49,6 +53,8 @@ function App() {
             <Route path="/" element={<Home />} />
             {/* <Route path="/" element={<HeroWithOverlay />} /> */}
             <Route path="/estimate-results" element={<EstimateResults />} />
+            <Route path='/user' element={<User/>}/>
+            <Route path='/business' element={<Business/>}/>
             <Route path="/track" element={<TrackParcels />} />
             <Route path="/new-shipment" element={<NewShipment />} />
             <Route path="/reports" element={<Reports />} />
@@ -59,7 +65,7 @@ function App() {
 
             {/* userdashboard */}
             <Route path="/dashboard/*" element={<UserDashboard />}>
-              <Route index element={<Navigate to="profile" />} />
+              <Route index element={<Navigate to="create-parcel" />} />
               <Route path="profile" element={<UserProfile />} />
               <Route path="parcel-history" element={<ParcelHistory />} />
               <Route path="track-parcel" element={<TrackParcel />} />
@@ -75,17 +81,17 @@ function App() {
         <Route path="/partner-dashboard/*" element={<DeliveryPartnerDashboard />}>
         <Route index element={<Navigate to="update-details" />} />
           <Route path="dashboard" element={<Dashboard />} /> 
-          <Route path="parcel-bids" element={<ParcelBids />} />
+          <Route path="available-parcels" element={<ParcelBids />} />
           <Route path="accepted-parcels" element={<AcceptedParcels />} />
           <Route path="profile" element={<Profile />} />
           <Route path="update-details" element={<UpdateDetails/>}/>
         </Route>
 
             {/* footer */}
-            <Route path="/about_us" element={<About />} />
+            <Route path="/about-us" element={<About />} />
             <Route path="/services" element={<Services />} />
             <Route path="/faq" element={<Faq />} />
-            <Route path="/contact_us" element={<Contact />} />
+            <Route path="/contact-us" element={<Contact />} />
             <Route path='/blog' element={<Blog/>}/>
             <Route path='/testimonials' element={<Testimonial/>}/>
             <Route path='/support' element={<Support/>}/>

@@ -4,7 +4,7 @@ import { BACKEND_URL } from '../constant';
 
 const getPartner = async () => {
     try {
-      const response = await axios.get(`${BACKEND_URL}/api/users/profile`, {
+      const response = await axios.get(`${BACKEND_URL}/api/delivery-partner/profile`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `${localStorage.getItem('token')}`,
@@ -19,7 +19,7 @@ const getPartner = async () => {
 
   const updatePartner = async (data) => {
     try {
-      const response = await axios.put(`${BACKEND_URL}/api/users/profile`,data, {
+      const response = await axios.put(`${BACKEND_URL}/api/delivery-partner/profile`,data, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `${localStorage.getItem('token')}`,
@@ -32,4 +32,21 @@ const getPartner = async () => {
     }
   };
 
-  export {updateUser};
+  const updateDetails = async (data) => {
+    try {
+      const response = await axios.post(`${BACKEND_URL}/api/delivery-partner/profile`,data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `${localStorage.getItem('token')}`,
+        },
+      });
+      return response;
+    } catch (error) {
+      console.error("Error fetching user profile:", error.response?.data || error.message);
+      return error;
+    }
+  };
+
+  
+
+  export {updatePartner,getPartner,updateDetails};

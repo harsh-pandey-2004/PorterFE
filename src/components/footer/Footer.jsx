@@ -21,11 +21,11 @@ const Footer = () => {
           </div>
 
           {/* Links Section */}
-          <div className="flex flex-col lg:flex-row justify-center lg:justify-between items-center lg:items-start text-center lg:text-left lg:flex-wrap mx-auto lg:mx-0">
+          {/* <div className="flex flex-col lg:flex-row justify-center lg:justify-between items-center lg:items-start text-center lg:text-left lg:flex-wrap mx-auto lg:mx-0">
             <ul className="flex flex-col space-y-2 text-sm sm:text-base lg:text-lg">
               <div className="flex flex-wrap justify-center space-x-4">
-                {/* First Row of Links */}
-                {['About_us', 'Services', 'FAQ', 'Contact_us'].map((link) => (
+                
+                {['About us', 'Services', 'FAQ', 'Contact us'].map((link) => (
                   <li className="flex-shrink-0" key={link}>
                     <Link
                       to={`/${link.toLowerCase().replace(/\s+/g, '-')}`} // Dynamically create link paths
@@ -37,8 +37,8 @@ const Footer = () => {
                 ))}
               </div>
               <div className="flex flex-wrap justify-center space-x-4">
-                {/* Second Row of Links */}
-                {['Blog', 'Testimonials', 'Support', 'Partners'].map((link) => (
+                
+                {['Blog', 'Testimonials', 'Support', 'Business'].map((link) => (
                   <li className="flex-shrink-0" key={link}>
                     <Link
                       to={`/${link.toLowerCase().replace(/\s+/g, '-')}`} // Dynamically create link paths
@@ -50,7 +50,20 @@ const Footer = () => {
                 ))}
               </div>
             </ul>
+          </div> */}
+          {/* Links Section */}
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4 justify-center text-center mx-auto lg:mx-0">
+            {['About us', 'Services', 'FAQ', 'Contact us', 'Blog', 'Testimonials', 'Support', 'Business'].map((link) => (
+              <Link
+                key={link}
+                to={`/${link.toLowerCase().replace(/\s+/g, '-')}`} // Dynamically create link paths
+                className="hover:text-[#E1E1E1] transition py-2 px-4 border border-transparent rounded-md shadow-sm text-center min-w-[8rem]"
+              >
+                {link}
+              </Link>
+            ))}
           </div>
+
 
           {/* Newsletter Section */}
           <div className="text-center lg:text-left w-full lg:w-auto">
@@ -71,13 +84,32 @@ const Footer = () => {
 
         <div className="mt-6 sm:mt-10 lg:mt-12 flex flex-col lg:flex-row justify-between items-center space-y-6 lg:space-y-0 border-t border-[#E1E1E1] pt-6 sm:pt-8">
           {/* Social Media Links */}
-          <div className="flex space-x-4 sm:space-x-6 justify-center lg:justify-start">
+          {/* <div className="flex space-x-4 sm:space-x-6 justify-center lg:justify-start">
             {['facebook-f', 'twitter', 'linkedin-in', 'instagram'].map((icon) => (
               <Link key={icon} className="hover:text-[#E1E1E1] transition text-xl sm:text-2xl">
                 <i className={`fab fa-${icon}`}></i>
               </Link>
             ))}
+          </div> */}
+          <div className="flex space-x-4 sm:space-x-6 justify-center lg:justify-start">
+            {[
+              { icon: 'facebook-f', url: 'https://www.facebook.com/share/18mUKPCgMV/?mibextid=LQQJ4d' },
+              // { icon: 'twitter', url: 'https://www.twitter.com' },
+              { icon: 'linkedin-in', url: 'https://www.linkedin.com/company/loader-pvt-ltd/' },
+              { icon: 'instagram', url: 'https://www.instagram.com/bookmytransportapp/profilecard/?igsh=MTV5dXl2am5mMzN3eg==' },
+            ].map(({ icon, url }) => (
+              <a
+                key={icon}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[#E1E1E1] transition text-xl sm:text-2xl"
+              >
+                <i className={`fab fa-${icon}`}></i>
+              </a>
+            ))}
           </div>
+
 
           {/* Additional Links */}
           <div className="text-xs sm:text-sm text-[#E1E1E1] text-center">

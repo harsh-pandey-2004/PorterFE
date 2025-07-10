@@ -1,14 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { createParcel } from '../services/userDashboard';
+import { useNavigate } from 'react-router-dom';
+import BookMyTransport from '../assets/Book my transport.png';
+import axios from 'axios'
 
 const NewShipment = () => {
   const [formData, setFormData] = useState({
-    senderName: '',
-    senderAddress: '',
-    recipientName: '',
-    recipientAddress: '',
-    parcelWeight: '',
-    trackingNumber: '',
+    from: '',
+    to: '',
+    vehicleType: 'Bike',
+    distance: 0,
+    productType: '',
+    serviceLevel: 'regular',
+    weight: '',
   });
+  const [price, setPrice] = useState(null);
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [isLoginPopupVisible, setIsLoginPopupVisible] = useState(false);
+  const navigate = useNavigate();
+
+  // Check if user is logged in
+  const user = JSON.parse(localStorage.getItem('user'));
+
+  useEffect(() => {
+    const savedParcelData = JSON.parse(localStorage.getItem('savedParcelData'));
+
+    if (savedParcelData && user) {
+      handleFormSubmit(savedParcelData);
+      localStorage.removeItem('savedParcelData');
+    }
+  }, [user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,15 +39,96 @@ const NewShipment = () => {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const generatedTrackingNumber = Math.floor(100000 + Math.random() * 900000).toString();
-    setFormData({
-      ...formData,
-      trackingNumber: generatedTrackingNumber,
-    });
+  const handleEstimateClick = async (pickup, drop) => {
+    // Destructure pickup and drop addresses (assuming passed as arguments)
 
-    console.log('Shipment created:', formData);
+    if (!pickup || !drop) {
+      // Handle missing address case (optional)
+      alert('Please enter both pickup and drop addresses!');
+      return null; // Return null for missing addresses
+    }
+
+    const apiKey = 'AlzaSyT-vBt2bBSn2ZnJA_3iUny4TW958DF7t0Y'; // Replace with your actual GoMaps.pro API key
+    const url = `https://maps.gomaps.pro/maps/api/directions/json?destination=${drop}&origin=${pickup}&key=${apiKey}`;
+
+    try {
+      const response = await axios.get(url);
+
+      if (response.data.status === 'OK') {
+        // Handle successful directions response
+        const directions = response.data.routes[0];
+        const twoPlaceDistance = directions.legs[0].distance.text; // Get distance with unit
+
+        // Extract the numeric distance from the text
+        const distance = parseFloat(twoPlaceDistance.split()[0]);
+
+        return distance;
+      } else {
+        // Handle errors
+        console.error('Directions API error:', response.data.error_message);
+        alert('Could not retrieve directions. Please try again later.');
+        return null;
+      }
+    } catch (error) {
+      console.error('Error fetching directions:', error);
+      alert('An error occurred. Please try again later.');
+      return null;
+    }
+  };
+
+  const handleFormSubmit = async (parcelData) => {
+    try {
+      const response = await createParcel(parcelData);
+      setPrice(response.data.price);
+      setIsPopupVisible(true);
+      console.log('Parcel created:', response.data);
+    } catch (error) {
+      console.error('Error creating parcel:', error);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const distance = await handleEstimateClick(formData.from, formData.to);
+    console.log(formData.from,formData.to);
+    console.log(distance);
+    if (distance !== null) {
+      const updatedParcelDetails = { ...formData, distance: distance }
+      setFormData(updatedParcelDetails);
+      console.log(updatedParcelDetails);
+      const parcelData = {
+        userId: user ? user._id : null,
+        ...updatedParcelDetails,
+      };
+
+      if (!user) {
+        try {
+          localStorage.setItem('savedParcelData', JSON.stringify(parcelData));
+          setIsLoginPopupVisible(true); // Show login popup if not logged in
+        } catch (error) {
+          console.error('Error saving parcel data to local storage:', error);
+        }
+        return;
+      }
+
+
+      handleFormSubmit(parcelData);
+    } else {
+      console.error("Error retrieving distance. Please try again.");
+    }
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupVisible(false);
+  };
+
+  const handleLoginRedirect = () => {
+    setIsLoginPopupVisible(false);
+    navigate('/login');
+  };
+
+  const handleCancel = () => {
+    setIsLoginPopupVisible(false);
   };
 
   return (
@@ -35,117 +137,155 @@ const NewShipment = () => {
         <h2 className="text-5xl font-extrabold text-center text-[#1D3557] mb-12">Create a New Shipment</h2>
 
         <div className="flex flex-col md:flex-row gap-8">
-          {/* Left Side Content */}
-          <div className="md:w-1/2 bg-white rounded-lg shadow-lg p-8">
-            <h3 className="text-3xl font-semibold mb-6 text-[#1D3557]">How to Create a Shipment</h3>
-            <p className="text-lg text-gray-700 mb-4">
+          {/* Left Side Content: Steps to Create Shipment */}
+          {/* <div className="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-2xl p-6 md:p-8">
+            <h3 className="text-2xl md:text-4xl font-bold mb-6 text-[#1D3557] tracking-wide text-center md:text-left">
+              How to Create a Shipment
+            </h3>
+            <p className="text-base md:text-lg text-gray-600 mb-6 leading-relaxed text-center md:text-left">
               Follow these simple steps to create your shipment. Please ensure that all the details are correct.
             </p>
-            <ul className="list-disc pl-6 text-gray-700 mb-6">
-              <li className="mb-2">Enter sender's details.</li>
-              <li className="mb-2">Enter recipient's details.</li>
-              <li className="mb-2">Specify parcel weight in kilograms.</li>
-              <li className="mb-2">Submit the form to generate a tracking number.</li>
+            <ul className="list-decimal pl-6 text-gray-700 space-y-4">
+              {[
+                "Enter the sender's details (From address).",
+                "Provide the recipient's details (To address).",
+                "Specify the type of product and its weight.",
+                "Choose your transport method (vehicle type).",
+                "Select the urgency level (Regular or Express).",
+                "Submit the form to get an estimated price and generate a tracking number.",
+              ].map((step, index) => (
+                <li key={index} className="text-sm md:text-lg flex items-start space-x-3">
+                  <span className="w-6 h-6 flex items-center justify-center bg-[#1D3557] text-white rounded-full">
+                    {index + 1}
+                  </span>
+                  <span>{step}</span>
+                </li>
+              ))}
             </ul>
-            <p className="text-lg text-gray-700">
-              A tracking number will be provided upon successful submission, enabling you to track your shipment.
+            <p className="text-base md:text-lg text-gray-600 mt-6 text-center md:text-left">
+              After submitting, you will receive a tracking number to track your shipment.
             </p>
+          </div> */}
+          <div className="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-2xl p-6 md:p-8 flex justify-center items-center">
+            <img
+              src={BookMyTransport}
+              alt="Book My Transport"
+              className="max-w-full h-auto rounded-lg"
+            />
           </div>
+
 
           {/* Right Side Form */}
           <div className="md:w-1/2 bg-white rounded-lg shadow-lg p-8">
             <form onSubmit={handleSubmit}>
-              {/* Sender Details */}
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="senderName">Sender's Name</label>
-                <input
-                  type="text"
-                  id="senderName"
-                  name="senderName"
-                  value={formData.senderName}
-                  onChange={handleChange}
-                  required
-                  className="w-full border border-gray-300 rounded-lg p-3 text-lg focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="senderAddress">Sender's Address</label>
-                <input
-                  type="text"
-                  id="senderAddress"
-                  name="senderAddress"
-                  value={formData.senderAddress}
-                  onChange={handleChange}
-                  required
-                  className="w-full border border-gray-300 rounded-lg p-3 text-lg focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              {/* Recipient Details */}
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="recipientName">Recipient's Name</label>
-                <input
-                  type="text"
-                  id="recipientName"
-                  name="recipientName"
-                  value={formData.recipientName}
-                  onChange={handleChange}
-                  required
-                  className="w-full border border-gray-300 rounded-lg p-3 text-lg focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="recipientAddress">Recipient's Address</label>
-                <input
-                  type="text"
-                  id="recipientAddress"
-                  name="recipientAddress"
-                  value={formData.recipientAddress}
-                  onChange={handleChange}
-                  required
-                  className="w-full border border-gray-300 rounded-lg p-3 text-lg focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              {/* Parcel Details */}
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="parcelWeight">Parcel Weight (kg)</label>
-                <input
-                  type="number"
-                  id="parcelWeight"
-                  name="parcelWeight"
-                  value={formData.parcelWeight}
-                  onChange={handleChange}
-                  required
-                  className="w-full border border-gray-300 rounded-lg p-3 text-lg focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              {/* Submit Button */}
+              <input
+                type="text"
+                name="from"
+                value={formData.from}
+                onChange={handleChange}
+                required
+                placeholder="From (Sender's Name, Number, Address)"
+                className="w-full border border-[#E0E0E0] rounded-lg p-4 text-lg focus:ring-2 focus:ring-[#4FC3F7] mb-6"
+              />
+              <input
+                type="text"
+                name="to"
+                value={formData.to}
+                onChange={handleChange}
+                required
+                placeholder="To (Recipient's Name, Number, Address)"
+                className="w-full border border-[#E0E0E0] rounded-lg p-4 text-lg focus:ring-2 focus:ring-[#4FC3F7] mb-6"
+              />
+              <input
+                type="text"
+                name="productType"
+                value={formData.productType}
+                onChange={handleChange}
+                placeholder="Type of Product (e.g., electronics, documents)"
+                className="w-full border border-[#E0E0E0] rounded-lg p-4 text-lg focus:ring-2 focus:ring-[#4FC3F7] mb-6"
+              />
+              <select
+                name="vehicleType"
+                value={formData.vehicleType}
+                onChange={handleChange}
+                className="w-full border border-[#E0E0E0] rounded-lg p-4 text-lg focus:ring-2 focus:ring-[#4FC3F7] mb-6"
+              >
+                <option value="Bike">Bike (Max 20 kg)</option>
+                <option value="Ev 3 wheeler">Ev 3 Wheeler (Max 50 kg)</option>
+                <option value="Three wheeler">Three Wheeler (Max 100 kg)</option>
+                <option value="Mahindra Pick up">Mahindra PickUp (Max 300 kg)</option>
+                <option value="Tata Ace">Tata Ace (Max 500 kg)</option>
+              </select>
+              <select
+                name="serviceLevel"
+                value={formData.serviceLevel}
+                onChange={handleChange}
+                className="w-full border border-[#E0E0E0] rounded-lg p-4 text-lg focus:ring-2 focus:ring-[#4FC3F7] mb-6"
+              >
+                <option value="regular">Regular</option>
+                <option value="express">Express</option>
+              </select>
+              <input
+                type="number"
+                name="weight"
+                value={formData.weight}
+                onChange={handleChange}
+                required
+                placeholder="Weight (kg)"
+                className="w-full border border-[#E0E0E0] rounded-lg p-4 text-lg focus:ring-2 focus:ring-[#4FC3F7] mb-6"
+              />
               <button
                 type="submit"
-                className="w-full bg-blue-600 text-white font-semibold text-lg py-3 rounded-lg hover:bg-blue-700 shadow-md transition duration-300"
+                className="w-full bg-[#1D3557] text-white font-semibold text-lg py-4 rounded-lg hover:bg-[#4FC3F7] shadow-md transition duration-300"
               >
                 Create Shipment
               </button>
             </form>
 
-            {/* Tracking Information */}
-            {formData.trackingNumber && (
-              <div className="mt-8 bg-green-100 rounded-lg p-6 text-green-700 shadow-lg">
+            {isPopupVisible && (
+              <div className="mt-8 bg-[#4CAF50] rounded-lg p-6 text-white shadow-lg">
                 <h3 className="text-xl font-bold">Shipment Created Successfully!</h3>
-                <p className="text-lg mt-2">
-                  Your tracking number is: <strong>{formData.trackingNumber}</strong>
-                </p>
+                <p>Your estimated price is: <strong>${price}</strong></p>
               </div>
             )}
           </div>
         </div>
+
+        {isLoginPopupVisible && (
+          <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
+            <div className="bg-white p-8 rounded-xl shadow-xl max-w-md w-full text-center relative">
+              <h3 className="text-2xl font-bold mb-6 text-gray-800">
+                You need to log in to create a shipment!
+              </h3>
+              <div className="flex justify-center gap-4">
+                <button
+                  onClick={handleLoginRedirect}
+                  className="px-8 py-3 bg-[#4FC3F7] text-white font-semibold rounded-lg hover:bg-[#1D3557] transition-all duration-300 ease-in-out shadow-md transform hover:scale-105"
+                >
+                  Go to Login
+                </button>
+                <button
+                  onClick={handleCancel}
+                  className="px-8 py-3 bg-[#F44336] text-white font-semibold rounded-lg hover:bg-[#D32F2F] transition-all duration-300 ease-in-out shadow-md transform hover:scale-105"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+
+        )}
       </div>
     </div>
   );
 };
 
 export default NewShipment;
+
+
+
+
+
+
 
 
