@@ -1,2 +1,2 @@
-const BACKEND_URL='http://localhost:5000';
-export {BACKEND_URL};
+const BACKEND_URL = "https://porter-be.onrender.com";
+export { BACKEND_URL };
